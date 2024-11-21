@@ -3,8 +3,6 @@ package com.auth.backend_java.service;
 import com.auth.backend_java.model.Todo;
 import com.auth.backend_java.repository.TodoRepository;
 import com.auth.backend_java.util.JwtUtil;  // Import JwtUtil
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +23,7 @@ public class TodoService {
     }
 
     public Todo createTodo(Todo todo) {
-        System.out.print("create todo callingggggg");
+        // System.out.print("create todo callingggggg");
         Todo savedTodo = todoRepository.save(todo);
         return savedTodo;
     }
@@ -71,25 +69,5 @@ public class TodoService {
         todoRepository.delete(existingTodo);
         logger.info("Todo deleted successfully with ID: {}", id); // Log successful deletion
     }
-
-    // Helper method to get the authenticated username from the JWT token
-    private String getAuthenticatedUsername(String token) {
-        String username = jwtUtil.extractUsername(token);  // Extract the username from the token
-        logger.debug("Extracted username from token: {}", username); // Log the extracted username
-        return username;
-    }
-
-    // Helper method to extract the token from the SecurityContext
-    private String extractToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        
-        if (authentication != null && authentication.getPrincipal() instanceof String) {
-            String token = (String) authentication.getPrincipal();
-            logger.debug("Extracted token from SecurityContext: {}", token); // Log the extracted token
-            return token;
-        } else {
-            logger.error("No authenticated user found or token is invalid"); // Log error if no authentication found
-            throw new RuntimeException("No authenticated user found");
-        }
-    }
+    
 }
